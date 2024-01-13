@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../../../../desafio-front/.git"
+		},
+		{
+			"path": "../../../../../desafio-front/node_modules"
+		},
+		{
+			"path": "../../../../../desafio-front/public"
+		},
+		{
+			"path": "../../../../../desafio-front/src"
+		}
+	],
+	"settings": {}
+}
