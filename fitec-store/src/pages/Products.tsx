@@ -28,6 +28,13 @@ import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import isEqual from 'lodash/isEqual';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import '../styles/Carousel.css';
+import ProductCarouselItem from '../components/ProductCarouselItem';
+import { useRef } from 'react';
+
 
 interface Product {
     id: number;
@@ -216,12 +223,77 @@ function ShoppingCart({
     );
 }
 
+function CustomDots({
+    dots,
+    activeIndex,
+    onClickDot
+}: {
+    dots: number[];
+    activeIndex: number;
+    onClickDot: (index: number) => void;
+}) {
+    return (
+        <div className="custom-dots">
+            {dots.map((_, index) => (
+                <span
+                    key={index}
+                    className={`dot ${index === activeIndex ? 'active' : ''}`}
+                    onClick={() => onClickDot(index)}
+                />
+            ))}
+        </div>
+    );
+}
+
 const defaultTheme = createTheme();
 
 export default function Products() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [cartItems, setCartItems] = useState<ShoppingCartItem[]>([]);
     const navigate = useNavigate();
+    const [activeDotIndex, setActiveDotIndex] = useState(0);
+
+    // Configurações do Slider
+    const sliderSettings = {
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        beforeChange: (_: any, next: number) => {
+            setActiveDotIndex(next);
+        },
+    };
+
+    // Manipulador de evento para clicar nas barras
+    const handleClickDot = (index: number) => {
+        setActiveDotIndex(index);
+        // Navega para o slide correspondente ao índice clicado
+        sliderRef.current?.slickGoTo(index);
+    };
+
+    // Referência para o componente Slider
+    const sliderRef = useRef<Slider>(null);
+
+    const contentStyle: React.CSSProperties = {
+        height: '200px',
+        color: '#fff',
+        lineHeight: '200px',
+        textAlign: 'center',
+        background: '#364d79',
+    };
+
+    const CustomDots: React.FC<any> = ({ dots, activeIndex, onClickDot }) => (
+        <div className="custom-dots">
+            {dots.map((_: any, index: number) => (
+                <span
+                    key={index}
+                    className={`dot ${index === activeIndex ? 'active' : ''}`}
+                    onClick={() => onClickDot(index)}
+                />
+            ))}
+        </div>
+    );
 
     useEffect(() => {
         try {
@@ -350,15 +422,23 @@ export default function Products() {
                         >
                             FITec Store
                         </Typography>
-                        <Stack
-                            sx={{ pt: 4 }}
-                            direction="row"
-                            spacing={2}
-                            justifyContent="center"
+                        <Slider
+                            ref={sliderRef as React.RefObject<Slider>}
+                            {...sliderSettings}
+                            className="product-carousel"
                         >
-                            <Button variant="contained">Main call to action</Button>
-                            <Button variant="outlined">Secondary action</Button>
-                        </Stack>
+                            {Object.entries(products).map(([category, categoryProducts]) => (
+                                <div key={category} style={contentStyle}>
+                                    <ProductCarouselItem
+                                        product={categoryProducts[0]}
+                                        onAddToCart={handleAddToCart}
+                                    />
+                                </div>
+                            ))}
+                        </Slider>
+                        <>
+                            <CustomDots dots={Array.from({ length: Object.keys(products).length }, (_, i) => i)} activeIndex={activeDotIndex} onClickDot={handleClickDot} />
+                        </>
                     </Container>
                 </Box>
                 <Container sx={{ py: 8 }} maxWidth="xl">
