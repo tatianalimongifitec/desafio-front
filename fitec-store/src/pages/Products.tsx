@@ -252,6 +252,7 @@ export default function Products() {
     const [cartItems, setCartItems] = useState<ShoppingCartItem[]>([]);
     const navigate = useNavigate();
     const [activeDotIndex, setActiveDotIndex] = useState(0);
+    const [totalPrice, setTotalPrice] = useState<number>(0);
 
     // Configurações do Slider
     const sliderSettings = {
@@ -296,20 +297,6 @@ export default function Products() {
             ))}
         </div>
     );
-
-    useEffect(() => {
-        try {
-            const storedCartItems = localStorage.getItem('cartItems');
-            if (storedCartItems) {
-                const parsedItems = JSON.parse(storedCartItems);
-                if (!isEqual(parsedItems, cartItems)) {
-                    setCartItems(parsedItems);
-                }
-            }
-        } catch (error) {
-            console.error('Error loading cart items from localStorage:', error);
-        }
-    }, []);
 
     // Funções de manipulação do carrinho
     const handleDrawerOpen = () => {
@@ -362,8 +349,25 @@ export default function Products() {
 
     const handleCheckout = () => {
         console.log('Checkout clicked!');
-        navigate('/checkout', { state: { cartItems } });
+        navigate('/checkout', { state: { cartItems, totalPrice } });
     };
+
+    useEffect(() => {
+        try {
+            const storedCartItems = localStorage.getItem('cartItems');
+            if (storedCartItems) {
+                const parsedItems: ShoppingCartItem[] = JSON.parse(storedCartItems);
+                if (!isEqual(parsedItems, cartItems)) {
+                    setCartItems(parsedItems);
+                    // Atualiza o preço total ao carregar o carrinho
+                    const newTotalPrice: number = parsedItems.reduce((total: number, item: ShoppingCartItem) => total + item.price * item.quantity, 0);
+                    setTotalPrice(newTotalPrice);
+                }
+            }
+        } catch (error) {
+            console.error('Error loading cart items from localStorage:', error);
+        }
+    }, [cartItems]);
 
     return (
         <ThemeProvider theme={defaultTheme}>
