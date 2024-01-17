@@ -1,27 +1,37 @@
-import React from 'react';
+import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-import { useLocation } from 'react-router-dom';
-import addresses from './AddressForm';
-import payments from './PaymentForm';
-import { ShoppingCartItem } from './Products';
 
-export default function Review() {
-    const location = useLocation();
-    const { state } = location;
+interface Product {
+    name: string;
+    desc: string;
+    price: string;
+}
 
-    if (!state || !state.cartItems) {
-        return (
-            <Typography variant="h6" gutterBottom>
-                No items in the cart.
-            </Typography>
-        );
-    }
+interface ShoppingCartItem {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+}
 
-    const cartItems: ShoppingCartItem[] = state.cartItems;
+interface ReviewProps {
+    cartItems: ShoppingCartItem[];
+    addresses: string[];
+    payments: { name: string; detail: string }[];
+}
+
+const Review: React.FC<ReviewProps> = ({ cartItems, addresses, payments }) => {
+    const products: Product[] = cartItems.map((item) => ({
+        name: item.name,
+        desc: `Quantity: ${item.quantity}`,
+        price: `$${(item.price * item.quantity).toFixed(2)}`,
+    }));
+
+    const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
         <React.Fragment>
@@ -29,16 +39,16 @@ export default function Review() {
                 Order summary
             </Typography>
             <List disablePadding>
-                {cartItems.map((item: ShoppingCartItem) => (
+                {cartItems.map((item) => (
                     <ListItem key={item.id} sx={{ py: 1, px: 0 }}>
-                        <ListItemText primary={item.name} />
-                        <Typography variant="body2">{(item.price * item.quantity).toFixed(2)}</Typography>
+                        <ListItemText primary={item.name} secondary={`Quantity: ${item.quantity}`} />
+                        <Typography variant="body2">{`$${(item.price * item.quantity).toFixed(2)}`}</Typography>
                     </ListItem>
                 ))}
                 <ListItem sx={{ py: 1, px: 0 }}>
                     <ListItemText primary="Total" />
                     <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                        ${cartItems.reduce((total: number, item: ShoppingCartItem) => total + item.price * item.quantity, 0).toFixed(2)}
+                        ${total.toFixed(2)}
                     </Typography>
                 </ListItem>
             </List>
@@ -55,8 +65,8 @@ export default function Review() {
                         Payment details
                     </Typography>
                     <Grid container>
-                        {payments.map((payment) => (
-                            <React.Fragment key={payment.name}>
+                        {payments.map((payment, index) => (
+                            <React.Fragment key={index}>
                                 <Grid item xs={6}>
                                     <Typography gutterBottom>{payment.name}</Typography>
                                 </Grid>
@@ -71,3 +81,5 @@ export default function Review() {
         </React.Fragment>
     );
 }
+
+export default Review;

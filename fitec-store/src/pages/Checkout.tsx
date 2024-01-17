@@ -1,3 +1,5 @@
+// Checkout.tsx
+
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
@@ -15,6 +17,17 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 
+interface Payment {
+    name: string;
+    detail: string;
+}
+interface ShoppingCartItem {
+    id: number;
+    name: string;
+    price: number;
+    quantity: number;
+}
+
 function Copyright(props: any) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,14 +43,20 @@ function Copyright(props: any) {
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
 
-function getStepContent(step: number) {
+function getStepContent(
+    step: number,
+    updateCartItems: (newItems: ShoppingCartItem[]) => void,
+    cartItems: ShoppingCartItem[],
+    addresses: string[],
+    payments: Payment[]
+) {
     switch (step) {
         case 0:
-            return <AddressForm />;
+            return <AddressForm updateCartItems={updateCartItems} />;
         case 1:
-            return <PaymentForm />;
+            return <PaymentForm updateCartItems={updateCartItems} />;
         case 2:
-            return <Review />;
+            return <Review cartItems={cartItems} addresses={addresses} payments={payments} />;
         default:
             throw new Error('Unknown step');
     }
@@ -45,6 +64,21 @@ function getStepContent(step: number) {
 
 export default function Checkout() {
     const [activeStep, setActiveStep] = React.useState(0);
+    const [cartItems, setCartItems] = React.useState<ShoppingCartItem[]>([]);
+    const [addresses, setAddresses] = React.useState<string[]>([]);
+    const [payments, setPayments] = React.useState<{ name: string; detail: string }[]>([]);
+
+    const updateCartItems = (newItems: ShoppingCartItem[]) => {
+        setCartItems(newItems);
+    };
+
+    const updateAddresses = (newAddresses: string[]) => {
+        setAddresses(newAddresses);
+    };
+
+    const updatePayments = (newPayments: { name: string; detail: string }[]) => {
+        setPayments(newPayments);
+    };
 
     const handleNext = () => {
         setActiveStep(activeStep + 1);
@@ -90,14 +124,13 @@ export default function Checkout() {
                                 Thank you for your order.
                             </Typography>
                             <Typography variant="subtitle1">
-                                Your order number is #2001539. We have emailed your order
-                                confirmation, and will send you an update when your order has
-                                shipped.
+                                Your order number is #2001539. We have emailed your order confirmation, and will
+                                send you an update when your order has shipped.
                             </Typography>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
-                            {getStepContent(activeStep)}
+                            {getStepContent(activeStep, updateCartItems, cartItems, addresses, payments)}
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 {activeStep !== 0 && (
                                     <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>

@@ -5,7 +5,18 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-export default function AddressForm() {
+interface ShoppingCartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface AddressFormProps {
+  updateCartItems?: (newItems: ShoppingCartItem[]) => void;
+}
+
+export default function AddressForm({ updateCartItems }: AddressFormProps) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>

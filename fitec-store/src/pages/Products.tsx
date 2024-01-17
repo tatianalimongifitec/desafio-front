@@ -260,6 +260,8 @@ export default function Products() {
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
+        autoplay: true,
+        autoplaySpeed: 3000,
         beforeChange: (_: any, next: number) => {
             setActiveDotIndex(next);
         },
@@ -458,14 +460,6 @@ export default function Products() {
                 <Typography variant="h6" align="center" gutterBottom>
                     Made with love
                     <FavoriteIcon sx={{ color: 'pink' }} />
-                </Typography>
-                <Typography
-                    variant="subtitle1"
-                    align="center"
-                    color="text.secondary"
-                    component="p"
-                >
-                    and cursing
                 </Typography>
                 <Copyright />
             </Box>

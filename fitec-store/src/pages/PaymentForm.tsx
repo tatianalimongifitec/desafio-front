@@ -5,7 +5,18 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-export default function PaymentForm() {
+interface ShoppingCartItem {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
+interface PaymentFormProps {
+  updateCartItems?: (newItems: ShoppingCartItem[]) => void;
+}
+
+export default function PaymentForm({ updateCartItems }: PaymentFormProps) {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
