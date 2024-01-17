@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 interface Payment {
     name: string;
@@ -148,8 +149,14 @@ export default function Checkout() {
                         </React.Fragment>
                     )}
                 </Paper>
-                <Copyright />
             </Container>
+            <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+                <Typography variant="h6" align="center" gutterBottom>
+                    Made with love
+                    <FavoriteIcon sx={{ color: 'pink' }} />
+                </Typography>
+                <Copyright />
+            </Box>
         </React.Fragment>
     );
 }

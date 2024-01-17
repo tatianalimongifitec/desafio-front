@@ -12,13 +12,15 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://www.fitec.org.br/home">
+        FITec
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -30,6 +32,8 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -37,6 +41,12 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     });
+
+    const loginSuccessful = true;
+
+    if (loginSuccessful) {
+      navigate('/');
+    }
   };
 
   return (
@@ -125,8 +135,14 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
+      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+        <Typography variant="h6" align="center" gutterBottom>
+          Made with love
+          <FavoriteIcon sx={{ color: 'pink' }} />
+        </Typography>
+        <Copyright />
+      </Box>
     </ThemeProvider>
   );
 }
