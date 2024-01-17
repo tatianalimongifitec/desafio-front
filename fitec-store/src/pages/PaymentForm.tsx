@@ -17,6 +17,18 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({ updateCartItems }: PaymentFormProps) {
+  const handlePaymentSubmit = () => {
+
+    const newItems: ShoppingCartItem[] = []; // Lógica para obter os itens atualizados
+
+    if (updateCartItems) {
+      updateCartItems(newItems);
+    }
+
+    // Log de console para verificar se a função é chamada e se os itens são atualizados
+    console.log('handlePaymentSubmit - newItems:', newItems);
+  };
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
