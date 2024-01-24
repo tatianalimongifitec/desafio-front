@@ -17,6 +17,8 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface Payment {
     name: string;
@@ -68,6 +70,7 @@ export default function Checkout() {
     const [cartItems, setCartItems] = React.useState<ShoppingCartItem[]>([]);
     const [addresses, setAddresses] = React.useState<string[]>([]);
     const [payments, setPayments] = React.useState<{ name: string; detail: string }[]>([]);
+    const [orderComplete, setOrderComplete] = React.useState(false);
 
     const updateCartItems = (newItems: ShoppingCartItem[]) => {
         setCartItems(newItems);
@@ -87,6 +90,12 @@ export default function Checkout() {
 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
+    };
+
+    const navigate = useNavigate();
+
+    const handleGoBack = () => {
+        navigate('/products');
     };
 
     return (
@@ -128,6 +137,17 @@ export default function Checkout() {
                                 Your order number is #2001539. We have emailed your order confirmation, and will
                                 send you an update when your order has shipped.
                             </Typography>
+                            {/* Adicione um botão para a página de produtos */}
+                            <Button
+                                variant="contained"
+                                onClick={() => {
+                                    setOrderComplete(true);
+                                    navigate('/products');
+                                }}
+                                sx={{ mt: 3, ml: 1, '&:focus': { backgroundColor: '#1976D2' } }}
+                            >
+                                Complete Order
+                            </Button>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
@@ -136,6 +156,15 @@ export default function Checkout() {
                                 {activeStep !== 0 && (
                                     <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                                         Back
+                                    </Button>
+                                )}
+                                {activeStep === 0 && (
+                                    <Button
+                                        variant="outlined"
+                                        onClick={handleGoBack}
+                                        sx={{ mt: 3, ml: 1 }}
+                                    >
+                                        Back to Products
                                     </Button>
                                 )}
                                 <Button
