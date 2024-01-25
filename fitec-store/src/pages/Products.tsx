@@ -1,4 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import isEqual from 'lodash/isEqual';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
@@ -10,31 +16,22 @@ import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { products } from '../data/productsData';
-import Card from '@mui/material/Card';
-import { CardActions, CardContent, CardMedia } from '@mui/material';
+import { Card, CardActions, CardContent, CardMedia, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import isEqual from 'lodash/isEqual';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+
+import { products } from '../data/productsData';
 import '../styles/Carousel.css';
 import ProductCarouselItem from '../components/ProductCarouselItem';
-import { useRef } from 'react';
-
 
 interface Product {
     id: number;
