@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
@@ -35,7 +35,7 @@ import '../styles/Carousel.css';
 import ProductCarouselItem from '../components/ProductCarouselItem';
 import { useRef } from 'react';
 
-
+// Definição de interfaces para tipos de dados utilizados no código
 interface Product {
     id: number;
     name: string;
@@ -49,7 +49,9 @@ interface ShoppingCartItem {
     quantity: number;
 }
 
+// Componente de Copyright
 function Copyright(props: any) {
+    // Renderiza informações de copyright com um link para a FITec
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
@@ -62,6 +64,7 @@ function Copyright(props: any) {
     );
 }
 
+// Componente de cartão de produto
 function ProductCard({
     product,
     onAddToCart
@@ -69,6 +72,7 @@ function ProductCard({
     product: Product;
     onAddToCart: (product: Product) => void;
 }) {
+    // Renderiza informações sobre o produto e botões para visualizar ou comprar
     return (
         <Card
             sx={{
@@ -79,6 +83,7 @@ function ProductCard({
                 borderRadius: '10px',
             }}
         >
+            {/* Seção da imagem do produto */}
             <CardMedia
                 component="div"
                 sx={{
@@ -87,12 +92,14 @@ function ProductCard({
                 }}
                 image={`https://source.unsplash.com/random?${product.name}`}
             />
+            {/* Seção de detalhes do produto */}
             <CardContent sx={{ flexGrow: 1, padding: '16px' }}>
                 <Typography variant="h6" gutterBottom>
                     {product.name}
                 </Typography>
                 <Typography>${product.price}</Typography>
             </CardContent>
+            {/* Botões de ação para visualizar ou comprar */}
             <CardActions>
                 <Button size="small">View</Button>
                 <Button size="small" onClick={() => onAddToCart(product)}>
@@ -103,6 +110,7 @@ function ProductCard({
     );
 }
 
+// Componente para renderizar uma seção de produtos de uma determinada categoria
 function CategorySection({
     category,
     products,
@@ -112,6 +120,7 @@ function CategorySection({
     products: Product[];
     onAddToCart: (product: Product) => void;
 }) {
+    // Renderiza uma seção de produtos em uma categoria específica
     return (
         <Grid item xs={12} key={category}>
             <Typography variant="h4" gutterBottom>
@@ -128,6 +137,7 @@ function CategorySection({
     );
 }
 
+// Componente de carrinho de compras
 function ShoppingCart({
     items,
     onClose,
@@ -143,6 +153,7 @@ function ShoppingCart({
     onRemove: (itemId: number) => void;
     onCheckout: () => void;
 }) {
+    // Renderiza o carrinho de compras com itens, quantidades e opções de ação
     const navigate = useNavigate();
 
     const totalPrice = items.reduce(
@@ -157,17 +168,21 @@ function ShoppingCart({
             onClose={onClose}
             PaperProps={{ sx: { width: '400px' } }}
         >
+            {/* Cabeçalho do carrinho de compras */}
             <Typography variant="h6" sx={{ p: 2, borderBottom: '1px solid #ccc' }}>
                 ShoppingCart
             </Typography>
+            {/* Lista de itens no carrinho de compras */}
             <List>
                 {items.length > 0 ? (
                     items.map((item) => (
                         <ListItem key={item.id}>
+                            {/* Informações do item no carrinho */}
                             <ListItemText
                                 primary={item.name}
                                 secondary={
                                     <>
+                                        {/* Controles de quantidade e ações no item */}
                                         <Stack direction="row" alignItems="center" spacing={1}>
                                             <IconButton onClick={() => onDecrement(item.id)}>
                                                 <RemoveIcon />
@@ -182,6 +197,7 @@ function ShoppingCart({
                                                 <DeleteIcon />
                                             </IconButton>
                                         </Stack>
+                                        {/* Subtotal do item no carrinho */}
                                         <Typography variant="body2" color="text.secondary">
                                             ${(item.price * item.quantity).toFixed(2)}
                                         </Typography>
@@ -191,6 +207,7 @@ function ShoppingCart({
                         </ListItem>
                     ))
                 ) : (
+                    // Mensagem quando o carrinho está vazio
                     <ListItem>
                         <Stack direction="column" alignItems="center" spacing={1}>
                             <DeleteIcon sx={{ fontSize: 100, color: 'gray' }} />
@@ -202,6 +219,7 @@ function ShoppingCart({
                     </ListItem>
                 )}
             </List>
+            {/* Resumo e botão de checkout */}
             {items.length > 0 && (
                 <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                     <Typography variant="subtitle1" sx={{ marginBottom: 1, fontSize: '1.2rem' }}>
@@ -223,6 +241,7 @@ function ShoppingCart({
     );
 }
 
+// Componente de pontos personalizados para o Slider
 function CustomDots({
     dots,
     activeIndex,
@@ -232,6 +251,7 @@ function CustomDots({
     activeIndex: number;
     onClickDot: (index: number) => void;
 }) {
+    // Renderiza pontos que representam os slides no Slider
     return (
         <div className="custom-dots">
             {dots.map((_, index) => (
@@ -245,9 +265,12 @@ function CustomDots({
     );
 }
 
+// Criação do tema padrão do Material-UI
 const defaultTheme = createTheme();
 
+// Componente principal que renderiza a aplicação
 export default function Products() {
+    // Estados do componente
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [cartItems, setCartItems] = useState<ShoppingCartItem[]>([]);
     const navigate = useNavigate();
@@ -267,7 +290,7 @@ export default function Products() {
         },
     };
 
-    // Manipulador de evento para clicar nas barras
+    // Manipulador de evento para clicar nos pontos (dots)
     const handleClickDot = (index: number) => {
         setActiveDotIndex(index);
         // Navega para o slide correspondente ao índice clicado
@@ -277,6 +300,7 @@ export default function Products() {
     // Referência para o componente Slider
     const sliderRef = useRef<Slider>(null);
 
+    // Estilo de conteúdo do Slider
     const contentStyle: React.CSSProperties = {
         height: '200px',
         color: '#fff',
@@ -285,18 +309,7 @@ export default function Products() {
         background: '#364d79',
     };
 
-    const CustomDots: React.FC<any> = ({ dots, activeIndex, onClickDot }) => (
-        <div className="custom-dots">
-            {dots.map((_: any, index: number) => (
-                <span
-                    key={index}
-                    className={`dot ${index === activeIndex ? 'active' : ''}`}
-                    onClick={() => onClickDot(index)}
-                />
-            ))}
-        </div>
-    );
-
+    // Efeito colateral para carregar itens do carrinho do armazenamento local
     useEffect(() => {
         try {
             const storedCartItems = localStorage.getItem('cartItems');
@@ -367,7 +380,9 @@ export default function Products() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
+            {/* Configuração inicial e reset de estilos */}
             <CssBaseline />
+            {/* Barra de navegação superior */}
             <AppBar position="fixed">
                 <Toolbar>
                     <CameraIcon sx={{ mr: 2 }} />
@@ -379,6 +394,7 @@ export default function Products() {
                     </IconButton>
                 </Toolbar>
             </AppBar>
+            {/* Carrinho de compras (Drawer) */}
             <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
                 <ShoppingCart
                     items={cartItems}
@@ -388,6 +404,7 @@ export default function Products() {
                     onRemove={handleRemove}
                     onCheckout={handleCheckout}
                 />
+                {/* Mensagem quando o carrinho está vazio */}
                 {!cartItems.length && (
                     <Box
                         sx={{
@@ -406,7 +423,9 @@ export default function Products() {
                     </Box>
                 )}
             </Drawer>
+            {/* Conteúdo principal */}
             <main>
+                {/* Seção de destaque (Slider) */}
                 <Box
                     sx={{
                         bgcolor: 'background.paper',
@@ -424,13 +443,14 @@ export default function Products() {
                         >
                             FITec Store
                         </Typography>
+                        {/* Componente de Slider com produtos em destaque */}
                         <Slider
                             ref={sliderRef as React.RefObject<Slider>}
                             {...sliderSettings}
                             className="product-carousel"
                         >
                             {Object.entries(products).map(([category, categoryProducts]) => (
-                                <div key={category} style={contentStyle}>
+                                <div key={category} className="carousel-slide">
                                     <ProductCarouselItem
                                         product={categoryProducts[0]}
                                         onAddToCart={handleAddToCart}
@@ -438,11 +458,13 @@ export default function Products() {
                                 </div>
                             ))}
                         </Slider>
+                        {/* Pontos personalizados para navegação no Slider */}
                         <>
                             <CustomDots dots={Array.from({ length: Object.keys(products).length }, (_, i) => i)} activeIndex={activeDotIndex} onClickDot={handleClickDot} />
                         </>
                     </Container>
                 </Box>
+                {/* Seção principal com categorias de produtos */}
                 <Container sx={{ py: 8 }} maxWidth="xl">
                     <Grid container spacing={4}>
                         {Object.entries(products).map(([category, categoryProducts]) => (
@@ -456,6 +478,7 @@ export default function Products() {
                     </Grid>
                 </Container>
             </main>
+            {/* Rodapé */}
             <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
                 <Typography variant="h6" align="center" gutterBottom>
                     Made with love
@@ -466,3 +489,5 @@ export default function Products() {
         </ThemeProvider>
     );
 }
+
+

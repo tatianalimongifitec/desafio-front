@@ -16,6 +16,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 
+
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -60,15 +61,26 @@ export default function SignIn() {
     const enteredEmail = data.get('email') as string;
     const enteredPassword = data.get('password') as string;
 
-    // Retrieve user data from localStorage
+    // Recuperar dados do usuário do localStorage
     const storedEmail = localStorage.getItem('userEmail');
     const storedPassword = localStorage.getItem('userPassword');
 
+    // Logs para depuração
+    console.log('Entered credentials:', {
+      enteredEmail,
+      enteredPassword,
+    });
+
+    console.log('Stored credentials:', {
+      storedEmail,
+      storedPassword,
+    });
+
     if (enteredEmail === storedEmail && enteredPassword === storedPassword) {
-      // Login successful
+      // Login bem-sucedido
       navigate('/products');
     } else {
-      // Login failed, set error message
+      // Login falhou, definir mensagem de erro
       setErrorMessage("Invalid email or password");
     }
   };

@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 function Copyright(props: any) {
   return (
@@ -28,12 +29,11 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const [formErrors, setFormErrors] = React.useState<{ [key: string]: string }>({});
+  const [formErrors, setFormErrors] = React.useState<string | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,21 +41,15 @@ export default function SignUp() {
 
     // Validar campos obrigatórios
     const requiredFields = ['firstName', 'lastName', 'email', 'password'];
-    const errors: { [key: string]: string } = {};
+    const missingFields = requiredFields.filter((field) => !data.get(field));
 
-    requiredFields.forEach((field) => {
-      if (!data.get(field)) {
-        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
-      }
-    });
-
-    if (Object.keys(errors).length > 0) {
-      // Se houver erros, atualize o estado e não prossiga com o envio
-      setFormErrors(errors);
+    if (missingFields.length > 0) {
+      // Se houver campos faltando, exiba a mensagem de erro
+      setFormErrors("All fields marked with an asterisk (*) are required");
       return;
     }
 
-    // Se não houver erros, prossiga com o envio
+    // Se todos os campos obrigatórios estiverem preenchidos, prossiga com o envio
     console.log({
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
@@ -63,6 +57,10 @@ export default function SignUp() {
       password: data.get('password'),
       allowExtraEmails: data.get('allowExtraEmails'),
     });
+
+    // Salvando o e-mail no localStorage
+    localStorage.setItem('userEmail', data.get('email') as string);
+    localStorage.setItem('userPassword', data.get('password') as string);
 
     const signupSuccessful = true;
 
@@ -90,6 +88,11 @@ export default function SignUp() {
             Sign up
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            {formErrors && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                <Typography variant="body2">{formErrors}</Typography>
+              </Alert>
+            )}
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -140,11 +143,6 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            {Object.keys(formErrors).map((field) => (
-              <Typography key={field} color="error" variant="body2" sx={{ mt: 1 }}>
-                {formErrors[field]}
-              </Typography>
-            ))}
             <Button
               type="submit"
               fullWidth
