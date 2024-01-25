@@ -24,7 +24,7 @@ interface ReviewProps {
     payments: { name: string; detail: string }[];
 }
 
-const Review: React.FC<ReviewProps> = ({ cartItems, addresses, payments }) => {
+const Review = ({ cartItems, addresses, payments }: ReviewProps) => {
     const products: Product[] = cartItems.map((item) => ({
         name: item.name,
         desc: `Quantity: ${item.quantity}`,
