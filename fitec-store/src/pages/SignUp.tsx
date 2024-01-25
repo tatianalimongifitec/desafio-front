@@ -33,18 +33,40 @@ const defaultTheme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [formErrors, setFormErrors] = React.useState<{ [key: string]: string }>({});
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+
+    // Validar campos obrigatórios
+    const requiredFields = ['firstName', 'lastName', 'email', 'password'];
+    const errors: { [key: string]: string } = {};
+
+    requiredFields.forEach((field) => {
+      if (!data.get(field)) {
+        errors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+      }
     });
 
-    const loginSuccessful = true;
+    if (Object.keys(errors).length > 0) {
+      // Se houver erros, atualize o estado e não prossiga com o envio
+      setFormErrors(errors);
+      return;
+    }
 
-    if (loginSuccessful) {
+    // Se não houver erros, prossiga com o envio
+    console.log({
+      firstName: data.get('firstName'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      password: data.get('password'),
+      allowExtraEmails: data.get('allowExtraEmails'),
+    });
+
+    const signupSuccessful = true;
+
+    if (signupSuccessful) {
       navigate('/');
     }
   };
@@ -73,7 +95,7 @@ export default function SignUp() {
                 <TextField
                   autoComplete="given-name"
                   name="firstName"
-                  required
+                  required  // torna obrigatório
                   fullWidth
                   id="firstName"
                   label="First Name"
@@ -82,7 +104,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  required  // torna obrigatório
                   fullWidth
                   id="lastName"
                   label="Last Name"
@@ -92,7 +114,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  required  // torna obrigatório
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -102,7 +124,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  required  // torna obrigatório
                   fullWidth
                   name="password"
                   label="Password"
@@ -118,6 +140,11 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
+            {Object.keys(formErrors).map((field) => (
+              <Typography key={field} color="error" variant="body2" sx={{ mt: 1 }}>
+                {formErrors[field]}
+              </Typography>
+            ))}
             <Button
               type="submit"
               fullWidth

@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 function Copyright(props: any) {
   return (
@@ -51,19 +52,24 @@ const RememberMeContainer = styled('div')({
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const enteredEmail = data.get('email') as string;
+    const enteredPassword = data.get('password') as string;
 
-    const loginSuccessful = true;
+    // Retrieve user data from localStorage
+    const storedEmail = localStorage.getItem('userEmail');
+    const storedPassword = localStorage.getItem('userPassword');
 
-    if (loginSuccessful) {
+    if (enteredEmail === storedEmail && enteredPassword === storedPassword) {
+      // Login successful
       navigate('/products');
+    } else {
+      // Login failed, set error message
+      setErrorMessage("Invalid email or password");
     }
   };
 
@@ -113,6 +119,11 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            {errorMessage && (
+              <Alert severity="error" sx={{ mt: 2 }}>
+                {errorMessage}
+              </Alert>
+            )}
             <Grid container>
               <Grid item>
                 <Link href="/signup" variant="body2">
