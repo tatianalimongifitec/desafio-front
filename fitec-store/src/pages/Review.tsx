@@ -22,15 +22,16 @@ interface ReviewProps {
     cartItems: ShoppingCartItem[];
     addresses: string[];
     payments: { name: string; detail: string }[];
-    totalPrice: number;
 }
 
-const Review: React.FC<ReviewProps> = ({ cartItems, addresses, payments, totalPrice: propsTotalPrice }) => {
+const Review = ({ cartItems, addresses, payments }: ReviewProps) => {
     const products: Product[] = cartItems.map((item) => ({
         name: item.name,
         desc: `Quantity: ${item.quantity}`,
         price: `$${(item.price * item.quantity).toFixed(2)}`,
     }));
+
+    const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
         <React.Fragment>
@@ -47,7 +48,7 @@ const Review: React.FC<ReviewProps> = ({ cartItems, addresses, payments, totalPr
                 <ListItem sx={{ py: 1, px: 0 }}>
                     <ListItemText primary="Total" />
                     <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                        ${propsTotalPrice ? propsTotalPrice.toFixed(2) : 'N/A'}
+                        ${total.toFixed(2)}
                     </Typography>
                 </ListItem>
             </List>
@@ -79,6 +80,6 @@ const Review: React.FC<ReviewProps> = ({ cartItems, addresses, payments, totalPr
             </Grid>
         </React.Fragment>
     );
-};
+}
 
 export default Review;
