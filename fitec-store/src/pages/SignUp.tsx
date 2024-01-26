@@ -15,6 +15,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 
 function Copyright(props: any) {
   return (
@@ -34,6 +38,7 @@ const defaultTheme = createTheme();
 export default function SignUp() {
   const navigate = useNavigate();
   const [formErrors, setFormErrors] = React.useState<string | null>(null);
+  const [userType, setUserType] = React.useState('user');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -56,11 +61,13 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
       allowExtraEmails: data.get('allowExtraEmails'),
+      userType: userType,
     });
 
-    // Salvando o e-mail no localStorage
+    // Salvando os dados no localStorage
     localStorage.setItem('userEmail', data.get('email') as string);
     localStorage.setItem('userPassword', data.get('password') as string);
+    localStorage.setItem('userType', userType);
 
     const signupSuccessful = true;
 
@@ -135,6 +142,22 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth>
+                  <InputLabel id="user-type-label">User Type</InputLabel>
+                  <Select
+                    labelId="user-type-label"
+                    id="userType"
+                    value={userType}
+                    onChange={(e) => setUserType(e.target.value as string)}
+                    label="User Type"
+                    required
+                  >
+                    <MenuItem value="user">User</MenuItem>
+                    <MenuItem value="admin">Administrator</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
