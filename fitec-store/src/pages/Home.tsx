@@ -64,6 +64,7 @@ export default function SignIn() {
     // Recuperar dados do usuário do localStorage
     const storedEmail = localStorage.getItem('userEmail');
     const storedPassword = localStorage.getItem('userPassword');
+    const userType = localStorage.getItem('userType');
 
     // Logs para depuração
     console.log('Entered credentials:', {
@@ -76,14 +77,15 @@ export default function SignIn() {
       storedPassword,
     });
 
-    if (enteredEmail === storedEmail && enteredPassword === storedPassword) {
+    if (enteredEmail === storedEmail && enteredPassword === storedPassword && userType) {
       // Login bem-sucedido
-      navigate('/products');
+      localStorage.setItem('userType', userType);
+      navigate('/products', { state: { userType } });
     } else {
       // Login falhou, definir mensagem de erro
       setErrorMessage("Invalid email or password");
     }
-  };
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>

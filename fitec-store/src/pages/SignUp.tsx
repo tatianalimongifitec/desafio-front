@@ -54,13 +54,16 @@ export default function SignUp() {
       return;
     }
 
-    // Se todos os campos obrigatórios estiverem preenchidos, prossiga com o envio
+    // Tratar o valor do checkbox para permitir e-mails extras
+    const allowExtraEmails = data.get('allowExtraEmails') === 'on';
+
+    // Exibir dados no console para depuração
     console.log({
       firstName: data.get('firstName'),
       lastName: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
-      allowExtraEmails: data.get('allowExtraEmails'),
+      allowExtraEmails: allowExtraEmails,
       userType: userType,
     });
 
@@ -150,7 +153,10 @@ export default function SignUp() {
                     labelId="user-type-label"
                     id="userType"
                     value={userType}
-                    onChange={(e) => setUserType(e.target.value as string)}
+                    onChange={(e) => {
+                      console.log('User Type changed:', e.target.value);
+                      setUserType(e.target.value as string);
+                    }}
                     label="User Type"
                     required
                   >

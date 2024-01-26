@@ -34,9 +34,11 @@ import 'slick-carousel/slick/slick-theme.css';
 import '../styles/Carousel.css';
 import ProductCarouselItem from '../components/ProductCarouselItem';
 import { useRef } from 'react';
+import AdminPanel from './AdminPanel';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 // Definição de interfaces para tipos de dados utilizados no código
-interface Product {
+export interface Product {
     id: number;
     name: string;
     price: number;
@@ -276,6 +278,9 @@ export default function Products() {
     const navigate = useNavigate();
     const [activeDotIndex, setActiveDotIndex] = useState(0);
 
+    // Verifica se o usuário é administrador
+    const isAdmin = localStorage.getItem('userType') === 'admin';
+
     // Configurações do Slider
     const sliderSettings = {
         infinite: true,
@@ -378,6 +383,11 @@ export default function Products() {
         navigate('/checkout', { state: { cartItems } });
     };
 
+    const handleAdminPanelOpen = () => {
+        navigate('/admin-panel');
+        console.log("Opening admin panel");
+    };
+
     return (
         <ThemeProvider theme={defaultTheme}>
             {/* Configuração inicial e reset de estilos */}
@@ -389,9 +399,17 @@ export default function Products() {
                     <Typography variant="h6" color="inherit" noWrap>
                         Product Catalog
                     </Typography>
-                    <IconButton color="inherit" onClick={handleDrawerOpen} sx={{ ml: 'auto' }}>
-                        <ShoppingCartIcon />
-                    </IconButton>
+                    {/* Bloco para conter os ícones de Settings e ShoppingCart */}
+                    <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                        {/* Ícone de Settings */}
+                        <IconButton color="inherit" onClick={handleAdminPanelOpen}>
+                            <SettingsIcon />
+                        </IconButton>
+                        {/* Ícone de ShoppingCart */}
+                        <IconButton color="inherit" onClick={handleDrawerOpen}>
+                            <ShoppingCartIcon />
+                        </IconButton>
+                    </div>
                 </Toolbar>
             </AppBar>
             {/* Carrinho de compras (Drawer) */}
