@@ -11,29 +11,12 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import InputBase from '@mui/material/InputBase';
 import EditIcon from '@mui/icons-material/Edit';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import { products } from '../data/productsData';
 import Products, { Product } from './Products';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://www.fitec.org.br/home">
-                FITec
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Footer from '../components/Footer';
 
 const defaultTheme = createTheme();
 
@@ -42,29 +25,17 @@ export default function AdminPanel() {
     const [categories, setCategories] = useState(Object.keys(products));
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-    const [editingCategory, setEditingCategory] = useState<string | null>(null);
-    const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
     const handleEditCategory = (category: string) => {
-        setEditingCategory(category);
-    };
-
-    const handleSaveCategory = () => {
-        // Implemente a lógica para salvar a categoria editada
-        setEditingCategory(null);
-    };
-
-    const handleEditProduct = (product: Product) => {
-        setEditingProduct(product);
-    };
-
-    const handleSaveProduct = () => {
-        // Implemente a lógica para salvar o produto editado
-        setEditingProduct(null);
+        console.log('Editing category:', category);
     };
 
     const handleAddCategory = () => {
         console.log('Adding a new category');
+    };
+
+    const handleEditProduct = (product: Product) => {
+        console.log('Editing product:', product);
     };
 
     const handleAddProduct = () => {
@@ -95,30 +66,14 @@ export default function AdminPanel() {
                         <ListItem
                             key={category}
                             button
-                            sx={{ borderRadius: 4, marginBottom: 1, backgroundColor: '#87CEEB' }}
+                            onClick={() => setSelectedCategory(category)}
+                            selected={category === selectedCategory}
+                            sx={{ borderRadius: 4, marginBottom: 1, backgroundColor: '#87CEEB' }} // Cor de fundo para categorias
                         >
-                            {editingCategory === category ? (
-                                <>
-                                    <InputBase
-                                        value={category}
-                                        onChange={(e) => setCategories((prevCategories) => (
-                                            prevCategories.map((prevCategory) => (
-                                                prevCategory === category ? e.target.value : prevCategory
-                                            ))
-                                        ))}
-                                    />
-                                    <IconButton edge="end" onClick={handleSaveCategory}>
-                                        <EditIcon />
-                                    </IconButton>
-                                </>
-                            ) : (
-                                <>
-                                    <ListItemText primary={category} />
-                                    <IconButton edge="end" onClick={() => handleEditCategory(category)}>
-                                        <EditIcon />
-                                    </IconButton>
-                                </>
-                            )}
+                            <ListItemText primary={category} />
+                            <IconButton edge="end" onClick={() => handleEditCategory(category)}>
+                                <EditIcon />
+                            </IconButton>
                         </ListItem>
                     ))}
                 </List>
@@ -128,40 +83,20 @@ export default function AdminPanel() {
                             <ListItem
                                 key={product.id}
                                 button
-                                sx={{ borderRadius: 4, marginBottom: 1, backgroundColor: '#98FB98' }}
+                                onClick={() => setSelectedProduct(product)}
+                                selected={product === selectedProduct}
+                                sx={{ borderRadius: 4, marginBottom: 1, backgroundColor: '#98FB98' }} // Cor de fundo para produtos
                             >
-                                {editingProduct?.id === product.id ? (
-                                    <>
-                                        <InputBase
-                                            value={product.name}
-                                            onChange={(e) => {
-                                                // Implemente a lógica para atualizar o nome do produto em edição
-                                            }}
-                                        />
-                                        <IconButton edge="end" onClick={handleSaveProduct}>
-                                            <EditIcon />
-                                        </IconButton>
-                                    </>
-                                ) : (
-                                    <>
-                                        <ListItemText primary={product.name} />
-                                        <IconButton edge="end" onClick={() => handleEditProduct(product)}>
-                                            <EditIcon />
-                                        </IconButton>
-                                    </>
-                                )}
+                                <ListItemText primary={product.name} />
+                                <IconButton edge="end" onClick={() => handleEditProduct(product)}>
+                                    <EditIcon />
+                                </IconButton>
                             </ListItem>
                         ))}
                     </List>
                 )}
             </Container>
-            <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-                <Typography variant="h6" align="center" gutterBottom>
-                    Made with love
-                    <FavoriteIcon sx={{ color: 'pink' }} />
-                </Typography>
-                <Copyright />
-            </Box>
+            <Footer />
         </ThemeProvider>
     );
 }

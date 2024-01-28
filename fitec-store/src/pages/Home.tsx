@@ -12,23 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
-
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://www.fitec.org.br/home">
-        FITec
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from '../components/Footer';
 
 const defaultTheme = createTheme();
 
@@ -148,13 +134,7 @@ export default function SignIn() {
           </StyledForm>
         </StyledBox>
       </Container>
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Made with love
-          <FavoriteIcon sx={{ color: 'pink' }} />
-        </Typography>
-        <Copyright />
-      </Box>
+      <Footer />
     </ThemeProvider>
   );
 }

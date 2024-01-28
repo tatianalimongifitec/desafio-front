@@ -16,9 +16,10 @@ import Typography from '@mui/material/Typography';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Footer from '../components/Footer';
 
 interface Payment {
     name: string;
@@ -29,19 +30,6 @@ interface ShoppingCartItem {
     name: string;
     price: number;
     quantity: number;
-}
-
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://www.fitec.org.br/home">
-                FITec
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
 }
 
 const steps = ['Shipping address', 'Payment details', 'Review your order'];
@@ -101,16 +89,9 @@ export default function Checkout() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <AppBar
-                position="absolute"
-                color="default"
-                elevation={0}
-                sx={{
-                    position: 'relative',
-                    borderBottom: (t) => `1px solid ${t.palette.divider}`,
-                }}
-            >
+            <AppBar position="fixed">
                 <Toolbar>
+                    <ShoppingCartIcon sx={{ mr: 2 }} />
                     <Typography variant="h6" color="inherit" noWrap>
                         FITec Store
                     </Typography>
@@ -179,13 +160,7 @@ export default function Checkout() {
                     )}
                 </Paper>
             </Container>
-            <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-                <Typography variant="h6" align="center" gutterBottom>
-                    Made with love
-                    <FavoriteIcon sx={{ color: 'pink' }} />
-                </Typography>
-                <Copyright />
-            </Box>
+            <Footer />
         </React.Fragment>
     );
 }

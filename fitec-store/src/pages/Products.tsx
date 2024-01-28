@@ -23,7 +23,6 @@ import { CardActions, CardContent, CardMedia } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -36,6 +35,7 @@ import ProductCarouselItem from '../components/ProductCarouselItem';
 import { useRef } from 'react';
 import AdminPanel from './AdminPanel';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Footer from '../components/Footer';
 
 // Definição de interfaces para tipos de dados utilizados no código
 export interface Product {
@@ -497,13 +497,7 @@ export default function Products() {
                 </Container>
             </main>
             {/* Rodapé */}
-            <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-                <Typography variant="h6" align="center" gutterBottom>
-                    Made with love
-                    <FavoriteIcon sx={{ color: 'pink' }} />
-                </Typography>
-                <Copyright />
-            </Box>
+            <Footer />
         </ThemeProvider>
     );
 }
