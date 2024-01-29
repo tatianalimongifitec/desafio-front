@@ -1,0 +1,25 @@
+/* components/Button/Button.css */
+
+.button {
+    background-color: var(--button-background);
+    color: var(--text-color-light);
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.25s, color 0.25s;
+}
+
+.button:hover {
+    background-color: var(--button-hover);
+}
+
+.add-to-cart-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}

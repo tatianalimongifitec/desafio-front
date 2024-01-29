@@ -40,6 +40,7 @@ const RememberMeContainer = styled('div')({
 export default function SignIn() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [userType, setUserType] = React.useState<string | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -66,6 +67,7 @@ export default function SignIn() {
     if (enteredEmail === storedEmail && enteredPassword === storedPassword && userType) {
       // Login bem-sucedido
       localStorage.setItem('userType', userType);
+      setUserType(userType);  // Adicione esta linha para atualizar o estado
       navigate('/products', { state: { userType } });
     } else {
       // Login falhou, definir mensagem de erro

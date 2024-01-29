@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Box from '@mui/material/Box';
+import '../styles/Footer.css';
 
 function Copyright(props: any) {
     return (
@@ -20,8 +21,8 @@ function Copyright(props: any) {
 
 function Footer() {
     return (
-        <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-            <Typography variant="h6" align="center" gutterBottom>
+        <Box sx={{ flexShrink: 0, width: 'fit', marginTop: 'auto', bgcolor: 'background.paper', p: 6 }} component="footer">
+            <Typography variant="h6" align="center" gutterBottom color="text.secondary">
                 Made with love
                 <FavoriteIcon sx={{ color: 'pink' }} />
             </Typography>

@@ -1,0 +1,15 @@
+/* styles/layout.css */
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.category-container {
+    margin: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+}

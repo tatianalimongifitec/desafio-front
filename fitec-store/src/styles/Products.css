@@ -1,0 +1,22 @@
+body,
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.products-container {
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+.product-list a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.product-card {
+    width: calc(25% - 16px);
+    margin: 0 8px 16px;
+}

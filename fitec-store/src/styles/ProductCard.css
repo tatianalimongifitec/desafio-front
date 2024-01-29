@@ -1,0 +1,21 @@
+.product-card {
+    width: calc(20% - 5px);
+    margin: 0 20px;
+    margin-bottom: 16px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.product-card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-card h3 {
+    margin: 10px 0;
+}
+
+.product-card p {
+    margin-bottom: 10px;
+}
